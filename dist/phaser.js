@@ -186428,7 +186428,16 @@ var WebGLSnapshot = function (sourceContext, config)
 
         var total = width * height * 4;
 
-        var pixels = new Uint8Array(total);
+        var pixels = GetFastValue(config, 'pixels', null) || new Uint8Array(total);
+
+        if (type === 'raw')
+        {
+            gl.readPixels(x, bufferHeight - y - height, width, height, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+
+            callback.call(null, pixels);
+
+            return;
+        }
 
         gl.readPixels(x, bufferHeight - y - height, width, height, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
 
@@ -190759,9 +190768,9 @@ var WebGLRenderer = new Class({
      *
      * @return {this} This WebGL Renderer.
      */
-    snapshot: function (callback, type, encoderOptions)
+    snapshot: function (callback, type, encoderOptions, pixels)
     {
-        return this.snapshotArea(0, 0, this.gl.drawingBufferWidth, this.gl.drawingBufferHeight, callback, type, encoderOptions);
+        return this.snapshotArea(0, 0, this.gl.drawingBufferWidth, this.gl.drawingBufferHeight, callback, type, encoderOptions, pixels);
     },
 
     /**
@@ -190790,7 +190799,7 @@ var WebGLRenderer = new Class({
      *
      * @return {this} This WebGL Renderer.
      */
-    snapshotArea: function (x, y, width, height, callback, type, encoderOptions)
+    snapshotArea: function (x, y, width, height, callback, type, encoderOptions, pixels)
     {
         var state = this.snapshotState;
 
@@ -190803,6 +190812,7 @@ var WebGLRenderer = new Class({
         state.width = width;
         state.height = height;
         state.unpremultiplyAlpha = this.game.config.premultipliedAlpha;
+        state.pixels = pixels || null;
 
         return this;
     },
@@ -256584,7 +256594,7 @@ var TweenManager = new Class({
         this.timeScale = 1;
         this.paused = false;
 
-        this.startTime = Date.now();
+        this.startTime = this.scene.game.getTime();
         this.prevTime = this.startTime;
         this.nextTime = this.gap;
 
@@ -256996,7 +257006,7 @@ var TweenManager = new Class({
      */
     getDelta: function (tick)
     {
-        var elapsed = Date.now() - this.prevTime;
+        var elapsed = this.scene.game.getTime() - this.prevTime;
 
         if (elapsed > this.maxLag)
         {
