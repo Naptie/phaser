@@ -1,0 +1,45 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 'lts/*'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build the package
+        run: npm run dist
+
+      - name: Push built output to 'dist'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Create an orphan branch (no history)
+          git checkout --orphan dist
+          git rm -rf --cached .
+
+          # Force add the built files
+          git add dist types package.json -f
+
+          # Commit the compiled files
+          git commit -m "chore: automated build output"
+
+          # Force push to the dist
+          git push origin dist -f
