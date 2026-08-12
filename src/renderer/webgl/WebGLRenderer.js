@@ -2137,9 +2137,9 @@ var WebGLRenderer = new Class({
      *
      * @return {this} This WebGL Renderer.
      */
-    snapshot: function (callback, type, encoderOptions)
+    snapshot: function (callback, type, encoderOptions, pixels)
     {
-        return this.snapshotArea(0, 0, this.gl.drawingBufferWidth, this.gl.drawingBufferHeight, callback, type, encoderOptions);
+        return this.snapshotArea(0, 0, this.gl.drawingBufferWidth, this.gl.drawingBufferHeight, callback, type, encoderOptions, pixels);
     },
 
     /**
@@ -2168,7 +2168,7 @@ var WebGLRenderer = new Class({
      *
      * @return {this} This WebGL Renderer.
      */
-    snapshotArea: function (x, y, width, height, callback, type, encoderOptions)
+    snapshotArea: function (x, y, width, height, callback, type, encoderOptions, pixels)
     {
         var state = this.snapshotState;
 
@@ -2181,6 +2181,7 @@ var WebGLRenderer = new Class({
         state.width = width;
         state.height = height;
         state.unpremultiplyAlpha = this.game.config.premultipliedAlpha;
+        state.pixels = pixels || null;
 
         return this;
     },

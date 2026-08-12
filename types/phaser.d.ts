@@ -50078,7 +50078,7 @@ declare namespace Phaser {
              * @param encoderOptions The image quality, between 0 and 1. Used for image formats with lossy compression, such as `image/jpeg`. Default 0.92.
              * @returns This Render Texture instance.
              */
-            snapshotArea(x: number, y: number, width: number, height: number, callback: Phaser.Types.Renderer.Snapshot.SnapshotCallback, type?: string, encoderOptions?: number): this;
+            snapshotArea(x: number, y: number, width: number, height: number, callback: Phaser.Types.Renderer.Snapshot.SnapshotCallback, type?: string, encoderOptions?: number, pixels?: ArrayBufferView | null): this;
 
             /**
              * Takes a snapshot of the whole of this Render Texture.
@@ -50099,7 +50099,7 @@ declare namespace Phaser {
              * @param encoderOptions The image quality, between 0 and 1. Used for image formats with lossy compression, such as `image/jpeg`. Default 0.92.
              * @returns This Render Texture instance.
              */
-            snapshot(callback: Phaser.Types.Renderer.Snapshot.SnapshotCallback, type?: string, encoderOptions?: number): this;
+            snapshot(callback: Phaser.Types.Renderer.Snapshot.SnapshotCallback, type?: string, encoderOptions?: number, pixels?: ArrayBufferView | null): this;
 
             /**
              * Takes a snapshot of the given pixel from this Render Texture.
@@ -102726,7 +102726,7 @@ declare namespace Phaser {
 
         namespace Renderer {
             namespace Snapshot {
-                type SnapshotCallback = (snapshot: Phaser.Display.Color | HTMLImageElement)=>void;
+                type SnapshotCallback = (snapshot: Phaser.Display.Color | HTMLImageElement | Uint8Array<ArrayBuffer>)=>void;
 
                 type SnapshotState = {
                     /**
@@ -102777,6 +102777,10 @@ declare namespace Phaser {
                      * Should the snapshot be unpremultiplied before being returned? WebGL only.
                      */
                     unpremultiplyAlpha?: boolean;
+                    /**
+                     * An optional pre-allocated pixel buffer to write into.
+                     */
+                    pixels?: ArrayBufferView | null;
                 };
 
             }
@@ -121214,7 +121218,7 @@ declare namespace Phaser {
                  * @param encoderOptions The image quality, between 0 and 1. Used for image formats with lossy compression, such as `image/jpeg`. Default 0.92.
                  * @returns This Canvas Renderer.
                  */
-                snapshot(callback: Phaser.Types.Renderer.Snapshot.SnapshotCallback, type?: string, encoderOptions?: number): this;
+                snapshot(callback: Phaser.Types.Renderer.Snapshot.SnapshotCallback, type?: string, encoderOptions?: number, pixels?: ArrayBufferView | null): this;
 
                 /**
                  * Schedules a snapshot of the given area of the game viewport to be taken after the current frame is rendered.
@@ -121235,7 +121239,7 @@ declare namespace Phaser {
                  * @param encoderOptions The image quality, between 0 and 1. Used for image formats with lossy compression, such as `image/jpeg`. Default 0.92.
                  * @returns This Canvas Renderer.
                  */
-                snapshotArea(x: number, y: number, width: number, height: number, callback: Phaser.Types.Renderer.Snapshot.SnapshotCallback, type?: string, encoderOptions?: number): this;
+                snapshotArea(x: number, y: number, width: number, height: number, callback: Phaser.Types.Renderer.Snapshot.SnapshotCallback, type?: string, encoderOptions?: number, pixels?: ArrayBufferView | null): this;
 
                 /**
                  * Schedules a snapshot of the given pixel from the game viewport to be taken after the current frame is rendered.
@@ -126763,7 +126767,7 @@ declare namespace Phaser {
                  * @param encoderOptions The image quality, between 0 and 1. Used for image formats with lossy compression, such as `image/jpeg`. Default 0.92.
                  * @returns This WebGL Renderer.
                  */
-                snapshot(callback: Phaser.Types.Renderer.Snapshot.SnapshotCallback, type?: string, encoderOptions?: number): this;
+                snapshot(callback: Phaser.Types.Renderer.Snapshot.SnapshotCallback, type?: string, encoderOptions?: number, pixels?: ArrayBufferView | null): this;
 
                 /**
                  * Schedules a snapshot of the given area of the game viewport to be taken after the current frame is rendered.
@@ -126786,7 +126790,7 @@ declare namespace Phaser {
                  * @param encoderOptions The image quality, between 0 and 1. Used for image formats with lossy compression, such as `image/jpeg`. Default 0.92.
                  * @returns This WebGL Renderer.
                  */
-                snapshotArea(x: number, y: number, width: number, height: number, callback: Phaser.Types.Renderer.Snapshot.SnapshotCallback, type?: string, encoderOptions?: number): this;
+                snapshotArea(x: number, y: number, width: number, height: number, callback: Phaser.Types.Renderer.Snapshot.SnapshotCallback, type?: string, encoderOptions?: number, pixels?: ArrayBufferView | null): this;
 
                 /**
                  * Schedules a snapshot of the given pixel from the game viewport to be taken after the current frame is rendered.
@@ -134411,7 +134415,7 @@ declare namespace Phaser {
              * @param encoderOptions The image quality, between 0 and 1. Used for image formats with lossy compression, such as `image/jpeg`. Default 0.92.
              * @returns This Dynamic Texture instance.
              */
-            snapshotArea(x: number, y: number, width: number, height: number, callback: Phaser.Types.Renderer.Snapshot.SnapshotCallback, type?: string, encoderOptions?: number): this;
+            snapshotArea(x: number, y: number, width: number, height: number, callback: Phaser.Types.Renderer.Snapshot.SnapshotCallback, type?: string, encoderOptions?: number, pixels?: ArrayBufferView | null): this;
 
             /**
              * Takes a snapshot of the whole of this Dynamic Texture.
@@ -134432,7 +134436,7 @@ declare namespace Phaser {
              * @param encoderOptions The image quality, between 0 and 1. Used for image formats with lossy compression, such as `image/jpeg`. Default 0.92.
              * @returns This Dynamic Texture instance.
              */
-            snapshot(callback: Phaser.Types.Renderer.Snapshot.SnapshotCallback, type?: string, encoderOptions?: number): this;
+            snapshot(callback: Phaser.Types.Renderer.Snapshot.SnapshotCallback, type?: string, encoderOptions?: number, pixels?: ArrayBufferView | null): this;
 
             /**
              * Takes a snapshot of the given pixel from this Dynamic Texture.

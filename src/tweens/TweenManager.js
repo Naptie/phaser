@@ -236,7 +236,7 @@ var TweenManager = new Class({
         this.timeScale = 1;
         this.paused = false;
 
-        this.startTime = Date.now();
+        this.startTime = this.scene.game.getTime();
         this.prevTime = this.startTime;
         this.nextTime = this.gap;
 
@@ -648,7 +648,7 @@ var TweenManager = new Class({
      */
     getDelta: function (tick)
     {
-        var elapsed = Date.now() - this.prevTime;
+        var elapsed = this.scene.game.getTime() - this.prevTime;
 
         if (elapsed > this.maxLag)
         {

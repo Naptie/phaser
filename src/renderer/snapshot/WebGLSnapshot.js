@@ -63,7 +63,16 @@ var WebGLSnapshot = function (sourceContext, config)
 
         var total = width * height * 4;
 
-        var pixels = new Uint8Array(total);
+        var pixels = GetFastValue(config, 'pixels', null) || new Uint8Array(total);
+
+        if (type === 'raw')
+        {
+            gl.readPixels(x, bufferHeight - y - height, width, height, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+
+            callback.call(null, pixels);
+
+            return;
+        }
 
         gl.readPixels(x, bufferHeight - y - height, width, height, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
 
